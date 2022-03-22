@@ -23,6 +23,8 @@ ENVIRONMENT_PRIVATE_KEY_MAP_KEY = 'PRIVATE_KEY_MAP'
 ENVIRONMENT_EMAIL_USERNAME_KEY = 'EMAIL_USERNAME'
 ENVIRONMENT_EMAIL_PASSWORD_KEY = 'EMAIL_PASSWORD'
 ENVIRONMENT_EMAIL_RECEIVER_ADDRESS_KEY = 'EMAIL_RECEIVER_ADDRESS'
+ENVIRONMENT_EMAIL_SMTP_SERVER_HOST_KEY = 'EMAIL_SMTP_SERVER_HOST'
+ENVIRONMENT_EMAIL_SMTP_SERVER_PORT_KEY = 'EMAIL_SMTP_SERVER_PORT'
 
 main_contract_abi = '[{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]'
 super_human_contract_abi = '[{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"_getNodesNames","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]'
@@ -229,7 +231,10 @@ class NodesManager:
         password = os.getenv(ENVIRONMENT_EMAIL_PASSWORD_KEY)
         receiver_email = os.getenv(ENVIRONMENT_EMAIL_RECEIVER_ADDRESS_KEY)
 
-        if not user_name or not password:
+        smtp_server_host = os.getenv(ENVIRONMENT_EMAIL_SMTP_SERVER_HOST_KEY, 'in-v3.mailjet.com' )
+        smtp_server_port = os.getenv(ENVIRONMENT_EMAIL_SMTP_SERVER_PORT_KEY, 587)
+
+        if not all([user_name, password, receiver_email, smtp_server_host, smtp_server_port]):
             log.warning("No email credentials exist set the environment variables %s, %s, %s",
                         ENVIRONMENT_EMAIL_USERNAME_KEY, ENVIRONMENT_EMAIL_PASSWORD_KEY,
                         ENVIRONMENT_EMAIL_RECEIVER_ADDRESS_KEY)
@@ -239,8 +244,8 @@ class NodesManager:
         #     .send(receiver_email,  email_subject, email_body)
 
         email_handler = EmailHandler(
-            server='in-v3.mailjet.com',
-            port=587,
+            server=smtp_server_host,
+            port=smtp_server_port,
             sender_username=user_name,
             sender_password=password,
             receiver_email=receiver_email
