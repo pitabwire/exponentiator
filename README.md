@@ -33,6 +33,7 @@ These represent smtp server settings if you need notifications
 # Support the effort
      0x4cc3D7B16Cd39Ff5aE73E7da56A4cd97E8d566b0
 
-# Appreciations
-    https://discordapp.com/users/ByteCurious#0001
-    https://discordapp.com/users/roninsti#3729
+These electricians contributed hugely
+
+    1. ByteCurious
+    2. roninsti
