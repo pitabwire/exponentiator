@@ -1,0 +1,13 @@
+name: Service testing action
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout new code for testing
+        uses: actions/checkout@v2
