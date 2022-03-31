@@ -21,7 +21,7 @@ tier_contract_abi = '[{"inputs": [{"internalType": "address","name": "account","
 class PowerNode(NodeInterface):
     tier_list = ['SUPERHUMAN']
 
-    def __init__(self, notifier):
+    def __init__(self, notifier: NotifierInterface):
         super().__init__(notifier=notifier)
         self.ftm_connection = None
         self.main_contract = None

@@ -7,7 +7,7 @@ from notification import NotifierInterface
 
 class NodeInterface(metaclass=abc.ABCMeta):
 
-    def __init__(self, notifier):
+    def __init__(self, notifier: NotifierInterface):
         self.notifier = notifier
 
     @classmethod
