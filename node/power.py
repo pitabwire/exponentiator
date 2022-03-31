@@ -166,4 +166,4 @@ class PowerNode(NodeInterface):
         :return:
         """
         rewards = investment['rewards']
-        return rewards > 50 or (rewards >= 25 and (rewards + investment['balance']) >= 50)
+        return rewards > 75 or (rewards >= 38 and (rewards + investment['balance']) >= 75)
