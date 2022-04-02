@@ -1,3 +1,5 @@
 
 web3==5.28.0
 pycoingecko==2.2.0
+cryptography==36.0.2
+

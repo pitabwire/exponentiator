@@ -4,10 +4,12 @@ import os
 import time
 
 import web3
+from cryptography.fernet import Fernet
 from eth_account import Account
 
 ENVIRONMENT_SERVICE_NAME_KEY = 'SERVICE_NAME'
 ENVIRONMENT_PRIVATE_KEY_MAP_KEY = 'PRIVATE_KEY_MAP'
+ENVIRONMENT_ENCRYPTION_SECRET = 'ENCRYPTION_SECRET'
 
 
 def get_service_name():
@@ -49,20 +51,23 @@ def get_private_key_map():
     :return:
     """
     wallet_map = {}
+    encryption_secret_str = os.getenv(ENVIRONMENT_ENCRYPTION_SECRET)
     wallet_map_str = os.getenv(ENVIRONMENT_PRIVATE_KEY_MAP_KEY)
     if wallet_map_str:
 
         wallet_list = wallet_map_str.split(',')
         for wallet_item in wallet_list:
             if '|' not in wallet_item:
-                wallet_map['default'] = Account.from_key(wallet_item)
+                acc_key = decrypt_key(key=encryption_secret_str, enc_message=wallet_item)
+                wallet_map['default'] = Account.from_key(acc_key)
             else:
                 wallet_name, wallet_address = wallet_item.split('|')
-                wallet_map[wallet_name] = Account.from_key()
+                acc_key = decrypt_key(key=encryption_secret_str, enc_message=wallet_address)
+                wallet_map[wallet_name] = Account.from_key(acc_key)
 
         return wallet_map
 
-    raise ValueError('A private key for is missing. Try setting Environment : %s'.format(
+    raise ValueError('A private key is missing. Try setting Environment : %s'.format(
         ENVIRONMENT_PRIVATE_KEY_MAP_KEY))
 
 
@@ -84,3 +89,15 @@ def get_network_connection(web3_connection, connection_attempts=5):
 
     time.sleep(math.pow(2, 5 - connection_attempts))
     return get_network_connection(web3_connection=web3_connection, connection_attempts=connection_attempts - 1)
+
+
+def decrypt_key(key: str, enc_message: str):
+    """
+        All account private keys should be secret.
+        To encrypt a key use : f = Fernet(key);msg = f.encrypt(message)
+    :return:
+    """
+
+    fernet = Fernet(key)
+    message_bytes = fernet.decrypt(enc_message.encode())
+    return message_bytes.decode()
