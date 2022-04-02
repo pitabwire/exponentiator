@@ -1,8 +1,10 @@
 import json
+import math
 import os
+import time
 
-from eth_account import Account
 import web3
+from eth_account import Account
 
 ENVIRONMENT_SERVICE_NAME_KEY = 'SERVICE_NAME'
 ENVIRONMENT_PRIVATE_KEY_MAP_KEY = 'PRIVATE_KEY_MAP'
@@ -64,3 +66,21 @@ def get_private_key_map():
         ENVIRONMENT_PRIVATE_KEY_MAP_KEY))
 
 
+def get_network_connection(web3_connection, connection_attempts=5):
+    """
+        Obtains a new connection to the fantom network
+    :param web3_connection:
+    :param connection_attempts:
+    :return:
+    """
+    if not web3_connection:
+        web3_connection = web3.Web3(web3.Web3.HTTPProvider('https://rpcapi.fantom.network/'))
+
+    if web3_connection.isConnected():
+        return web3_connection
+
+    if connection_attempts <= 1:
+        raise ConnectionError("Unable to connect to the fantom network")
+
+    time.sleep(math.pow(2, 5 - connection_attempts))
+    return get_network_connection(web3_connection=web3_connection, connection_attempts=connection_attempts - 1)

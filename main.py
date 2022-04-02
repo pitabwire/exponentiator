@@ -7,7 +7,6 @@ from utility import get_service_name
 
 log = logging.getLogger(__name__)
 
-
 ENVIRONMENT_SLEEP_DURATION_KEY = 'SLEEP_DURATION'
 
 
@@ -29,7 +28,7 @@ class DaemonApp:
         while should_run:
 
             try:
-                self.exponentiator.execute_check()
+                self.exponentiator.execute_check(compound_pct=100)
 
                 sleep_duration = os.getenv(ENVIRONMENT_SLEEP_DURATION_KEY, 5 * 60)
                 log.debug(" run -- sleeping for %s before checking again, Edit Env [%s]", sleep_duration,
