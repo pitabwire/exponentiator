@@ -53,10 +53,10 @@ class PowerNode(NodeInterface):
                                           **dict(address='0x131c7afb4E5f5c94A27611f7210dfEc2215E85Ae',
                                                  abi=main_contract_abi))
         self.tier_contract = get_contract(self.ftm_connection,
-                                          **dict(address='0x730255d50C9FE605172eE4e860ec0109dd61e867',
+                                          **dict(address='0x8cb77FFa9A7B82541E96db41C35e307d9d16A294',
                                                  abi=tier_contract_abi))
         self.node_contract = get_contract(self.ftm_connection,
-                                          **dict(address='0xC8007751603bB3E45834A59af64190Bb618b4a83',
+                                          **dict(address='0xa51b7f5071868d8bdc3619d9e5dddd5fb8c1ab90',
                                                  abi=super_human_contract_abi))
 
     def get_dex(self):
