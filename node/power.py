@@ -37,7 +37,7 @@ class PowerNode(NodeInterface):
         super().__init__(notifier=notifier)
         self.ftm_connection = None
         self.main_contract = None
-        self.node_contract = None
+        self.super_human_contract = None
         self.tier_contract = None
         self.dex = None
         self.last_send_time = dict()
@@ -55,9 +55,9 @@ class PowerNode(NodeInterface):
         self.tier_contract = get_contract(self.ftm_connection,
                                           **dict(address='0x8cb77FFa9A7B82541E96db41C35e307d9d16A294',
                                                  abi=tier_contract_abi))
-        self.node_contract = get_contract(self.ftm_connection,
-                                          **dict(address='0xa51b7f5071868d8bdc3619d9e5dddd5fb8c1ab90',
-                                                 abi=super_human_contract_abi))
+        self.super_human_contract = get_contract(self.ftm_connection,
+                                                 **dict(address='0xC8007751603bB3E45834A59af64190Bb618b4a83',
+                                                        abi=super_human_contract_abi))
 
     def get_dex(self):
         """
@@ -168,7 +168,7 @@ class PowerNode(NodeInterface):
         :return:
         """
 
-        all_nodes = self.node_contract.functions._getNodesNames(wallet_address).call()
+        all_nodes = self.super_human_contract.functions._getNodesNames(wallet_address).call()
         nodes_list = all_nodes.split('#')
         if not nodes_list:
             return "auto_compound"
